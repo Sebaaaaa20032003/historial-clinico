@@ -1,63 +1,43 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  Typography,
-  Link as MuiLink,
-  Paper,
-} from '@mui/material';
-import { Link } from 'react-router-dom';
 import InputCampo from '../components/InputCampo';
+import { Button, Link, Box, Typography } from '@mui/material';
 
-function Login() {
+export default function Login({ onLoginExitoso }) {
   const [usuario, setUsuario] = useState('');
-  const [contrasena, setContrasena] = useState('');
+  const [password, setPassword] = useState('');
 
-  const manejarEnvio = (e) => {
+  const manejarSubmit = (e) => {
     e.preventDefault();
-    alert(`Bienvenido ${usuario}`);
+    // Aquí validas usuario y password (por ahora simulamos éxito)
+    if (usuario.trim() !== '') {
+      onLoginExitoso(usuario);
+    }
   };
 
   return (
-    <Container maxWidth="sm">
-      <Paper elevation={3} sx={{ padding: 4, marginTop: 10 }}>
-        <Typography variant="h4" align="center" gutterBottom>
-          Iniciar Sesión
-        </Typography>
-        <Box component="form" onSubmit={manejarEnvio} sx={{ mt: 2 }}>
-          <InputCampo
-            etiqueta="Usuario"
-            tipo="text"
-            valor={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
-          />
+    <Box sx={{ maxWidth: 350, margin: 'auto', mt: 10 }}>
+      <Typography variant="h4" mb={2}>Iniciar sesión</Typography>
+      <form onSubmit={manejarSubmit}>
+        <InputCampo
+          etiqueta="Usuario"
+          tipo="text"
+          valor={usuario}
+          onChange={(e) => setUsuario(e.target.value)}
+        />
+        <InputCampo
+          etiqueta="Contraseña"
+          tipo="password"
+          valor={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
+          Entrar
+        </Button>
+      </form>
 
-          <InputCampo
-            etiqueta="Contraseña"
-            tipo="password"
-            valor={contrasena}
-            onChange={(e) => setContrasena(e.target.value)}
-          />
-
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ mt: 2 }}
-          >
-            Ingresar
-          </Button>
-        </Box>
-        <Typography align="center" sx={{ mt: 3 }}>
-          <MuiLink component={Link} to="/sobre" underline="hover">
-            Sobre nuestra clínica
-          </MuiLink>
-        </Typography>
-      </Paper>
-    </Container>
+      <Link href="/sobre" display="block" mt={3} textAlign="center">
+        Sobre nuestra clínica
+      </Link>
+    </Box>
   );
 }
-
-export default Login;
